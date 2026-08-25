@@ -13,6 +13,4 @@ Create `.env` from `.env.example`, add GEMINI_API_KEY, then:
 python manage.py migrate
 python manage.py runserver
 
-Open http://127.0.0.1:8000/
 
-The project also runs in demo mode when no API key is configured.
