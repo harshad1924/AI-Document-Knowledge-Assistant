@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ document.title }} | DocMind AI
+{% endblock %}
+
+
+{% block content %}
+
+<div class="workspace">
+
+
+    <!-- BACK -->
+
+    <a href="/" class="back-link">
+        ← Back to Documents
+    </a>
+
+
+    <!-- DOCUMENT HEADER -->
+
+    <section class="document-header">
+
+        <div class="document-title-area">
+
+            <div class="large-pdf-icon">
+                PDF
+            </div>
+
+            <div>
+
+                <div class="section-label">
+                    DOCUMENT
+                </div>
+
+                <h1>
+                    {{ document.title }}
+                </h1>
+
+                <p>
+                    Uploaded {{ document.created_at|date:"d M Y, h:i A" }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="ai-status">
+
+            <span class="status-dot"></span>
+
+            AI Ready
+
+        </div>
+
+    </section>
+
+
+    <!-- MAIN AI WORKSPACE -->
+
+    <section class="ai-workspace">
+
+
+        <!-- SUMMARY -->
+
+        <div class="summary-card">
+
+            <div class="card-header">
+
+                <div class="card-title">
+
+                    <div class="card-icon purple">
+                        ✦
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            AI Summary
+                        </h2>
+
+                        <p>
+                            Intelligent overview of your document
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="ai-badge">
+                    AI GENERATED
+                </span>
+
+            </div>
+
+
+            <div class="summary-content">
+
+                {{ document.summary|linebreaksbr }}
+
+            </div>
+
+        </div>
+
+
+        <!-- QUESTION PANEL -->
+
+        <div class="question-card">
+
+            <div class="card-header">
+
+                <div class="card-title">
+
+                    <div class="card-icon blue">
+                        💬
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Ask Your Document
+                        </h2>
+
+                        <p>
+                            Ask questions using natural language
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="post"
+                action="/document/{{ document.id }}/ask/"
+                id="questionForm"
+            >
+
+                {% csrf_token %}
+
+                <div class="question-input-wrapper">
+
+                    <textarea
+                        name="question"
+                        id="question"
+                        rows="5"
+                        placeholder="Example: What is the company's leave policy?"
+                        required
+                    ></textarea>
+
+                    <div class="input-footer">
+
+                        <span class="input-hint">
+                            ✦ Answers are based on your document
+                        </span>
+
+                        <button
+                            type="submit"
+                            class="ask-button"
+                            id="askButton"
+                        >
+
+                            Ask AI
+
+                            <span>→</span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+
+            <!-- SUGGESTED QUESTIONS -->
+
+            <div class="suggested-section">
+
+                <p>
+                    Try asking
+                </p>
+
+                <div class="suggested-questions">
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        data-question="How many paid leave days are available?"
+                    >
+                        How many paid leave days are available?
+                    </button>
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        data-question="What are the standard working hours?"
+                    >
+                        What are the working hours?
+                    </button>
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        data-question="What is the work from home policy?"
+                    >
+                        What is the work from home policy?
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONVERSATION HISTORY -->
+
+    <section class="conversation-section">
+
+        <div class="conversation-heading">
+
+            <div>
+
+                <div class="section-label">
+                    CHAT HISTORY
+                </div>
+
+                <h2>
+                    Conversation
+                </h2>
+
+            </div>
+
+            <span class="conversation-count">
+                {{ conversations|length }}
+                interaction{{ conversations|length|pluralize }}
+            </span>
+
+        </div>
+
+
+        {% for c in conversations %}
+
+        <div class="conversation-item">
+
+
+            <!-- USER QUESTION -->
+
+            <div class="message user-message">
+
+                <div class="message-avatar user-avatar">
+                    You
+                </div>
+
+                <div class="message-body">
+
+                    <div class="message-label">
+                        Your Question
+                    </div>
+
+                    <p>
+                        {{ c.question }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- AI ANSWER -->
+
+            <div class="message ai-message">
+
+                <div class="message-avatar ai-avatar">
+                    ✦
+                </div>
+
+                <div class="message-body">
+
+                    <div class="message-label ai-label">
+                        DocMind AI
+                    </div>
+
+                    <div class="ai-answer">
+                        {{ c.answer|linebreaksbr }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+        {% empty %}
+
+        <div class="no-conversation">
+
+            <div class="no-chat-icon">
+                💬
+            </div>
+
+            <h3>
+                No questions yet
+            </h3>
+
+            <p>
+                Ask your first question above to start
+                a conversation with your document.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+</div>
+
+{% endblock %}

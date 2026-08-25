@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        DocMind AI
+        {% endblock %}
+    </title>
+
+    <link rel="stylesheet"
+          href="{% static 'style.css' %}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="/" class="logo">
+                <span class="logo-icon">✦</span>
+                DocMind
+                <span class="logo-ai">AI</span>
+            </a>
+
+            <div class="nav-links">
+
+                <a href="/" class="nav-link">
+                    Documents
+                </a>
+
+                <a href="#features" class="nav-link">
+                    Features
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+                <strong>DocMind AI</strong>
+                <p>
+                    Intelligent document analysis powered by AI.
+                </p>
+            </div>
+
+            <div class="footer-tech">
+                Python · Django · Gemini · SQLite
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="{% static 'script.js' %}"></script>
+
+</body>
+</html>

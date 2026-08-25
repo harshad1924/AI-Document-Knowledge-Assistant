@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+
+{% block title %}
+DocMind AI | Document Knowledge Assistant
+{% endblock %}
+
+
+{% block content %}
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+    <div class="hero-badge">
+        ✦ AI-Powered Document Intelligence
+    </div>
+
+    <h1>
+        Understand your documents
+        <span>with AI.</span>
+    </h1>
+
+    <p class="hero-description">
+
+        Upload a PDF, get an intelligent summary,
+        and ask questions about your document
+        using natural language.
+
+    </p>
+
+</section>
+
+
+<!-- UPLOAD SECTION -->
+
+<section class="upload-section">
+
+    <div class="upload-card">
+
+        <div class="upload-icon">
+            📄
+        </div>
+
+        <h2>
+            Upload your document
+        </h2>
+
+        <p>
+            Upload a PDF and let AI analyze its content.
+        </p>
+
+
+        <form method="post"
+              action="/upload/"
+              enctype="multipart/form-data"
+              id="uploadForm">
+
+            {% csrf_token %}
+
+
+            <label for="document"
+                   class="drop-zone"
+                   id="dropZone">
+
+                <div class="drop-icon">
+                    ⬆
+                </div>
+
+                <div class="drop-title">
+                    Drag & drop your PDF here
+                </div>
+
+                <div class="drop-subtitle">
+                    or click to browse from your computer
+                </div>
+
+                <div class="file-types">
+                    PDF files only · Maximum recommended size: 10 MB
+                </div>
+
+                <input
+                    type="file"
+                    id="document"
+                    name="document"
+                    accept=".pdf"
+                    hidden
+                    required
+                >
+
+            </label>
+
+
+            <div id="fileName"
+                 class="selected-file">
+            </div>
+
+
+            <button type="submit"
+                    class="upload-button"
+                    id="uploadButton">
+
+                <span>✦</span>
+
+                Analyze Document
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ERROR MESSAGE -->
+
+{% if error %}
+
+<div class="alert-container">
+
+    <div class="alert">
+
+        <span>⚠</span>
+
+        {{ error }}
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<!-- DOCUMENTS -->
+
+<section class="documents-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-label">
+                YOUR WORKSPACE
+            </div>
+
+            <h2>
+                Recent Documents
+            </h2>
+
+        </div>
+
+        <div class="document-count">
+
+            {{ documents|length }}
+            document{{ documents|length|pluralize }}
+
+        </div>
+
+    </div>
+
+
+    <div class="document-grid">
+
+        {% for d in documents %}
+
+        <div class="document-card">
+
+            <div class="document-top">
+
+                <div class="pdf-icon">
+                    PDF
+                </div>
+
+                <div class="document-menu">
+                    •••
+                </div>
+
+            </div>
+
+
+            <div class="document-info">
+
+                <h3>
+                    {{ d.title }}
+                </h3>
+
+                <p>
+                    Uploaded {{ d.created_at|date:"d M Y" }}
+                </p>
+
+            </div>
+
+
+            <a href="/document/{{ d.id }}/"
+               class="open-document">
+
+                Open document
+
+                <span>→</span>
+
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                📂
+            </div>
+
+            <h3>
+                No documents yet
+            </h3>
+
+            <p>
+                Upload your first PDF to start using
+                the AI document assistant.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section class="features-section"
+         id="features">
+
+    <div class="section-label">
+        POWERFUL FEATURES
+    </div>
+
+    <h2>
+        Everything you need to understand documents
+    </h2>
+
+
+    <div class="feature-grid">
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                📄
+            </div>
+
+            <h3>
+                Smart Extraction
+            </h3>
+
+            <p>
+                Extract readable text from your PDF
+                documents automatically.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                ✨
+            </div>
+
+            <h3>
+                AI Summaries
+            </h3>
+
+            <p>
+                Get concise summaries containing
+                important information and key points.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                💬
+            </div>
+
+            <h3>
+                Ask Questions
+            </h3>
+
+            <p>
+                Ask natural-language questions and
+                receive answers based on your document.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+{% endblock %}
